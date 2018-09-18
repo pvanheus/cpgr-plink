@@ -1,0 +1,25 @@
+PLINK v1.90b3q 64-bit (29 May 2015)
+Options in effect:
+  --bfile ACB_example
+  --chr 6
+  --make-bed
+  --out per_chrom/ACB_example_chr6
+
+Hostname: MGH001803.local
+Working directory: /Users/alicia/Dropbox/Shared/anc_sandbox
+Start time: Sun Oct  4 10:47:54 2015
+
+Random number seed: 1443970074
+16384 MB RAM detected; reserving 8192 MB for main workspace.
+47613 variants loaded from .bim file.
+489 people (251 males, 238 females) loaded from .fam.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 343 founders and 146 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.995496.
+47613 variants and 489 people pass filters and QC.
+Note: No phenotypes present.
+--make-bed to per_chrom/ACB_example_chr6.bed + per_chrom/ACB_example_chr6.bim +
+per_chrom/ACB_example_chr6.fam ... done.
+
+End time: Sun Oct  4 10:47:54 2015

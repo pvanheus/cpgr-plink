@@ -1,0 +1,92 @@
+<?xml version="1.0"?> 
+<tool id="plink" name="PLINK" version="@TOOL_VERSION@+galaxy0">
+  <description><![CDATA[
+      PLINK is a free, open-source whole genome association analysis toolset, 
+      designed to perform a range of basic, large-scale analyses in a computationally efficient manner.
+   ]]>  
+   </description>
+  <macros>
+    <token name="@TOOL_VERSION@">1.90b4</token>
+  </macros>
+
+   <requirements>
+    <requirement type="package" version="@TOOL_VERSION@">plink</requirement>
+  </requirements>
+        
+  <command detect_errors="exit_code"><![CDATA[
+    ln -s '${input_bed_file}' input_file.bed &&
+    ln -s '${input_bim_file}' input_file.bim &&
+    ln -s '${input_fam_file}' input_file.fam &&
+    for i in {1..${chr_num}};
+    do 
+      plink 
+      --noweb 
+      --bfile input_file 
+      --chr \$i 
+      --make-bed 
+      --out input_file_chr\$i;
+    done;
+    
+    ]]>                                                                                                                 
+  </command>
+        
+  <inputs>
+    <param name="input_bed_file" type="data" format="binary" label="Select the bed file"/> 
+    <param name="input_bim_file" type="data" format="bim" label="Select the bim file"/> 
+    <param name="input_fam_file" type="data" format="fam" label="Select the fam file"/> 
+    <param name="chr_num" type="integer" value="22" label="Enter Chromosome Limit"/> 
+    <!-- plink options -->
+    <param name="noweb" argument="--noweb" type="boolean" truevalue="--noweb" falsevalue="" checked="false"                            
+                    label="Noweb has no effect since no web check is implemented yet. " /> 
+    <param name="chr" argument="--chr" type="boolean" truevalue="--chr" falsevalue="" checked="false"                            
+                    label="All variants not on this given chromosome(s)" /> 
+    <param name="makebed" argument="--make-bed" type="boolean" truevalue="--make-bed" falsevalue="" checked="false"                            
+                    label="Create a new binary fileset." /> 
+  </inputs>
+        
+  <!--
+  <outputs>
+    <data name="output_bed" format="bed" label="Bed Output file" />
+    <data name="output_bim" format="bim" label="Bim Output file" />
+    <data name="output_fam" format="fam" label="Fam Output file" />
+    <data name="output_log" format="txt" label="Log Output file" />
+  </outputs>
+  -->
+  <outputs>
+  	<collection type="list" label="Chromosomes Bed Files" name="output_bed">
+    	<discover_datasets pattern="input_file_chr([0-9]*).bim" ext="bim" />
+   	</collection>
+  </outputs> 
+        
+  <tests>
+    <test>
+      <param name="input_bed_file" value="test.bed" />
+      <output name="output_bed" file="test_chr1.bed" lines_diff="4" />
+      <output name="output_bim" file="test_chr1.bim" lines_diff="4" />
+      <output name="output_fam" file="test_chr1.fam" lines_diff="4" />
+      <output name="output_log" file="test_chr1.log" lines_diff="4" />
+    </test>
+  </tests>
+  <help><![CDATA[
+
+  **What it does**
+
+  PLINK v1.90b4 64-bit (20 Mar 2017)             www.cog-genomics.org/plink/1.9/
+(C) 2005-2017 Shaun Purcell, Christopher Chang   GNU General Public License v3
+
+  plink [input flag(s)...] {command flag(s)...} {other flag(s)...}
+  plink --help {flag name(s)...}
+
+Commands include --make-bed, --recode, --flip-scan, --merge-list,
+--write-snplist, --list-duplicate-vars, --freqx, --missing, --test-mishap,
+--hardy, --mendel, --ibc, --impute-sex, --indep-pairphase, --r2, --show-tags,
+--blocks, --distance, --genome, --homozyg, --make-rel, --make-grm-gz,
+--rel-cutoff, --cluster, --pca, --neighbour, --ibs-test, --regress-distance,
+--model, --bd, --gxe, --logistic, --dosage, --lasso, --test-missing,
+--make-perm-pheno, --tdt, --qfam, --annotate, --clump, --gene-report,
+--meta-analysis, --epistasis, --fast-epistasis, and --score.
+
+'plink --help | more' describes all functions (warning: long)
+
+  ]]></help>
+</tool>
